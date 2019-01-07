@@ -1,0 +1,27 @@
+NONCLUSTERED INDEX
+
+A nonclustered index is analogous to an index in a textbook. The data
+is stored in one place, the index in another place. The index will have
+pointers to the storage location of the data
+
+Since the nonclustered index is stored separately from the actual data, 
+a table can have more than one non-clustered index, just like how a book can
+have an index by Chapters at the beginning and another index by common terms 
+at the end.
+
+In the index itself, the data is stored in an ascending or descending order
+of the index key, which doesn't in any way influence the storage of data
+in the table
+
+SYNTAX
+
+ CREATE NONCLUSTERED INDEX IX_tblEmployee_Name ON tblEmployee(Name)
+
+
+But CLUSTERED INDEX IN FASTER than a non clustered index, because,
+the nonclustered index has to refer back to the table, if the selected column
+is not present in the index.
+
+and clustered index dtermines the storage order of rows in the table, hence
+doesn't require additional disk space, but where as a non clustered index is 
+stored separately from the table, additional storage space is required

@@ -1,0 +1,45 @@
+CLUSTERED INDEX
+
+A clusterd index determines the physical order of data in a table.
+For this reason, a table can have only one clustered index
+
+Untuk ngeceknya, kita bikin tabel biasa, dengan Id sebagai primary key nya
+kemudian execute sp_helpindex bserta nama tablenya
+
+contoh:
+
+Execute sp_helpindex tblEmployee
+
+if table doesn't have any clustered index, it will create automatically on 
+that column
+
+DETERMINE HOW THE DATA STORED IN THE TABLE
+
+
+Clustered index
+
+clustered index is analogous to a telephone directory, where the data is 
+arranged by the last name. We just learnt that, a table can have only one 
+clustered index. However, the index can contain multiple columns 
+(composite index).
+
+- Create a composite clustered index on the Gender and Salary Columns
+
+ CREATE CLUSTERED INDEX IX_tblEmployee_Gender_Salary 
+ON tblEmployee(Gender DESC, Salary ASC)
+
+Contoh composite clustered index diterapkan pada buku telpon
+buku telepon diurutkan berdasarkan last name terlebih dahulu, 
+kalau misal ada last name yang sama baru nanti di sebelahnya ada first name
+untuk membedakan 
+
+Tapi karena clustered index hanya bisa dibikin satu, maka kita harus drop
+terlebih dahulu clusterd index yang lama, kalau tidak akan terjadi error
+saat kita execute create composite clustered index tadi
+(clusterd index to enforce primary key constraint)
+
+tapi kalau kita DROP clustered index untuk primary key secara eksplisit
+tetap akan menghasilkan error karena being used for PK constraint
+enforcement, lalu gimana cara hapusnya?
+
+Simple, lewat object explorer 

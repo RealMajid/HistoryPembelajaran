@@ -1,0 +1,38 @@
+ADVANTAGES AND DISADVANTAGES OF INDEXES
+
+
+Advantages
+1. Indexes are used by queries to find data quickly
+tidak hanya select statement saja yang bisa benefit, tapi delete and update
+statement juga bisa menguntungkan jika menggunakan index
+
+ketika sorting juga menguntungkan ketika kita sudah mengindeks, 
+contoh pada order by query, ktika kita sudah mengindeks, query engine tidak 
+perlu melakukan sortir table ketika melakukan query, simply scan indeks lalu
+mengembalikan hasil 
+
+- The types of queries that can benefit from indexes
+
+- Covering queries
+
+Disadvantages
+
+1. Additional Disk Space
+(clustered index not) karna dia tidak disimpan terpisah dalam table.
+Karena nonclustered index disimpan terpisah dalam tabel, maka dia akan 
+memerlukan space disk tambahan, bergantung dari ukuran tabel, 
+jumlah dan tipe kolom yang digunakan pada tabel
+
+
+2. DML (Insert, Update, Delete) statements can become slow
+ketika kita melakukan DML, makan otomatis data yang terdapat pada index
+harus ikut diupdate juga, maka dari itu, kalau misal terlalu banyak index
+yang terdapat pada suatu tabel, maka akan mempengaruhi performace saat
+modikifikasi data. karna itu perlu dilakukan index tuning untuk 
+mengetahui berapa jumlah ideal index pada suatu tabel
+
+3. Covering query, kalau misal pada saat kita request, tapi kolomnya
+belum ada diindex (pada nonclustered index) maka dia akan melakukan
+lookup in the table again. jadi rada lambat. kalo misal pada
+saat request kolomnya sudah tercakup pada index, maka query kita sudah
+terkover sehingga sql hanya perlu mengembalikan dari indexnya saja.

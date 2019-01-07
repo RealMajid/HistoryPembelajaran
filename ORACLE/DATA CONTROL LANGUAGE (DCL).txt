@@ -1,0 +1,108 @@
+DATA CONTROL LANGUAGE (DCL) IN ORACLE
+
+- DCL adalah command yang akan dealing with privileges
+- DCL commands enforces an implicit commit before & after the statement
+  (sama kyak DDL)
+- sehingga cannot undo (rollback) the changes
+
+Privileges sendiri cakupannya meliputi :
+- The right to execute a particular type of SQL statement
+- The right to connect to the database
+- The right to create a table in your schema
+- The right to select rows from someone else's Tables/ Execute
+  Stored procedures
+
+if we want to perform any task or any operation on the database we
+require a permission, so when we say permission , it will be given by
+DBA 
+
+privilege is a permission
+THOSE privileges will be dealt with the DCL commands
+
+- Like DDL commands, DCL commands will interact with the database directly
+so there's no buffer involvement here (faster performance)
+
+
+PRIVILEGES terdiri dari 2 tipe
+- SYSTEM PRIVILEGES 
+Available only to administrators and application developers
+
+- OBJECT PRIVILEGES
+Allow users to perform a particular action on a specific object
+
+object privileges are granted to end-users so that they can use database
+application to accomplish specific tasks
+
+Object privileges can be given by the owners, or the schema owners
+
+DCL COMMANDS
+
+GRANT, REVOKE, SET ROLE
+
+Grant is used for giving the privileges to other users on our own objects
+Revoke is used to take back the privileges granted by us
+Set role is used to assign a specific role to the end users
+
+ROLE
+-role is group of privileges (isinya banyak privileges, dari pada ngasih
+satu privileges ke user mending banyak sekalian)
+-multiple privileges and can be granted to other users
+
+
+Beberapa contoh dari sintaksnya
+
+SHOW USER -- untuk mendeteksi current user to which we have connected
+this will display the user name to which we have connected to the database
+
+GRANT CONNECT, RESOURCE to USER identified by PAssWORD
+
+GRANT SELECT on EMP to U2; U2 can SELECT data from U1.EMP
+(giving privileges select on EMP table to U2 from U1)
+
+tapi saat U2 select data EMP, dia harus specify the owner name
+misal SELECT * FROM U1.EMP`, because EMP is present in U1 schema
+U1 is the owner of the object
+
+GRANT ALL on EMP to U2, --granting all privileges to U2 on U1.EMP
+apa yang dimaksud dengan ALL? all doesn't mean that all the privileges 
+of Oracle (whatever present in Oracle database)
+. All means whatever the privileges we have, all privileges on EMP
+object.
+
+grant multiple privileges
+GRANT SELECT, INSERT on EMP to U2, U3; --U2, U3 can Select/Insert
+
+***we cannot grant privileges on multiple object, bisanya cuman satu aja
+in one statement (tapi privileges dan users bisa multiple)
+
+With grant option***
+contoh ceritanya, U1 ingin memberikan privileges yang didapat dari scott ke
+beberapa user lainnya secara langsung,
+kalo secara langsung it's not possible makanya pake with GRANT Option
+
+GRANT SELECT on EMP to U2 with GRANT option
+
+lalu U2 ingin memberikan privileges yang didapatkan dari U1, maka dia 
+bisa memberikan karna sudah dikasih grant option dari U1
+
+lalu gmana U3 mengeksekusinya, karna dia adalah pihak terjauh yang mendapatkan
+privileges itu? 
+
+U1> GRANT SELECT ON EMP to U2 with grant option
+U2> SELECT * FROM U1.EMP; --bisa
+U2> GRANT SELECT ON U1.EMP to U3;
+U3> Select * FROM U1.EMP;
+
+***Catatan = ingat, bahwa yang dispecify nya adalah pemilik dari resource
+bukan person who granted the privileges to US.
+
+misal U1 ingin revoke hak aksesnya U3 karna tidak setuju
+U1> REVOKE SELECT ON EMP FROM U3;
+hal ini tidak dapat dilakukan karena U1 is not the person who has directly
+granted the privileges to U3
+
+solusinya, dia bisa meminta U2 untuk revoke select atau
+U1> REVOKE SELECT ON EMP FROM U2; maka select ke U3 juga diremove
+
+
+

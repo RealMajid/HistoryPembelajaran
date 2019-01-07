@@ -1,0 +1,46 @@
+UNIQUE INDEX
+
+- Unique index is used to enforce uniqueness of key values in the index
+
+Note: by default, PRIMARY KEY constraint, create a unique clustered index
+
+SYNTAX
+
+CREATE UNIQUE CLUSTERED INDEX 
+
+in reality, primary key constraint actually uses unique index behind
+the scenes to enforce the primary key constraint
+
+klo kita drop unique clusterd index pada table, maka primary key contraint juga
+akan ikut menghilang, kita bisa memasukkan duplicate value ke dalam tabel tsb
+
+kalo unique clusterd index kan wajar kalo buat id, karna primary
+
+lha kalo buat unique index buat nonclustered gmana?
+misal kasusnya kita ingin dalam organisasi kita tidak dua ada pegawai yang
+mempunyai nama depan dan nama belakang yang sama, maka dalam kasus tsb
+kita bisa membuat unique nonclustered index
+
+CREATE UNIQUE NONCLUSTERED INDEX UIX_tblEmployee_FirstName_LastName
+ON tblEmployee(FirstName, LastName)
+
+apa bedanya unique contraint dengan unique index pada sebuah kolom?
+so anytime you want to enforce uniqueness accross one or more columns, 
+you know we will actually use unique key constraint	
+
+actually, there are no major differences between a unique constraint and
+a unique index. In fact when ou add a unique constraint, a unique index gets
+created behind the scenes
+
+
+contohnya saat kita menambah constraint pada suatu kolom dlm table
+
+ALTER TABLE tblEmployee ADD CONSTRAINT UQ_tblEmployee_City
+UNIQUE (City)
+maka behind scenes akan membuat unique non-clustered index pada tabel tsb
+
+tapi klo pengen clustered tinggal dganti jadi
+
+ALTER TABLE tblEmployee ADD CONSTRAINT UQ_tblEmployee_City
+UNIQUE CLUSTERED(City)
+maka behind scenes akan membuat unique clustered index pada tabel tsb

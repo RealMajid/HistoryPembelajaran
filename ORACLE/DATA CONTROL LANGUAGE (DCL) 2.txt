@@ -1,0 +1,78 @@
+REVOKE
+
+SQL> Revoke Connect, Resource from USER --Revoking Roles
+
+SQL> Revoke SELECT on EMP from U2; -- U2 can't SELECT data from U1.EMP
+
+SQL> Revoke ALL on EMP from U2; -- Revoking ALL privileges from U2 on U1.EMP
+
+SQL> REvoke SELECT, INSERT on EMP from U2, U3; -- U2, U3 Can't select/insert
+
+
+SET ROLE
+
+so role is a group of privileges
+pada pembahasan sebelumnya telah dibahas bahwa kita tidak bisa untuk 
+memberikan privileges kepada multiple object through a single statement
+contoh : GRANT SELECT on EMP, DEPT to U2 XXXXXXXX
+
+use case dari SET ROLE
+misal ada pegawai yang butuh diberikan 20 privileges pada 30 objek di 
+database, maka kita memberikan privileges itu. bagaimana kalo ada
+pegawai baru masuk lagi? sebelum ada set role maka kita harus menyimpan
+script pada sebuah file lalu mengekekusi lagi, atau kita bisa 
+identifikasi privilege yang pegawai tsb dapatkan, lalu grant all privilege
+ke pegawai baru. Hal tsb merupakan tedious task and very difficult for 
+maintenance purpose and identifying the privileges are also difficult task
+for the future incoming employees
+
+
+instead of giving multiple privileges to that particular level of employee
+we can create a role
+
+SQL> CREATE ROLE R1;
+
+then assign all privileges to that particular role
+SQL> CREATE ROLE R1 identified by PASSWORD; --Create role with password
+SQL> CREATE ROLE R1 Not identified; -- Creating Role without password
+
+SQL> SET Role R1; -- Setting R1 to the Current user (whatever user we have
+used to connect to the database)
+SQL> SET Role ALL; -- assigning all role that we have in the database;
+SQL> SET Role ALL Except R1;
+
+SQL> Set Role None; -- Removing all the roles
+SQL> Set Role R1 identified by PASSWORD; -- set role using password
+
++++++ SET ROLE CUMAN BUAT CURRENT USER ONLY
+
+
+THEEEENNNNNN*****
+grant privileges to the role first
+granting privileges to multiple object to the role
+SQL> GRANT P1[, P2, ..., Pn] to R1;
+
+then grant role to the user 
+
+SQL> GRANT R1 to U1[, U2, ..., Un];
+
+
+
+misal kita ingin remove one privilege or add one more privilege
+ to all
+
+SQL> GRANT SELECT ON XYZ to R1
+kita hanya butuh grant select ke  1 Role saja, dengan itu maka user yang mempunyai
+role ini akan secara otomatis akses this new privilege
+
+so kalo kita ingin ngasih 1 role atau remove dapat dilakukan pada 
+ROLE LEVEL NOT AT USERS LEVEL
+
+kalo misal ada yang promosi, kita tinggal ngasih role yang lebih tinggi
+tanpa harus me revoke role yang sudah ada.
+
+misal ingin memberikan password pada role
+SQL> ALTER Role R1 identified by PASSWORD; --Adding Password
+SQL> ALTER Role R1 Not Identified; -- Removing Password
+SQL> ALTER USER U1 DEFAULT ROLE R1; -- Setting DEFAULT ROLE
+
